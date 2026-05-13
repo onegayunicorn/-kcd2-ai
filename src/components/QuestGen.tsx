@@ -5,6 +5,7 @@ import { generateQuantumQuest } from '../lib/gemini';
 import { Quest } from '../types';
 import { sua } from '../lib/sua-core';
 import { cn } from '../lib/utils';
+import BohemiaMap from './BohemiaMap';
 
 export default function QuestGen() {
   const [quest, setQuest] = useState<Quest | null>(null);
@@ -36,6 +37,10 @@ export default function QuestGen() {
         playerBrutality: suaState.rep.brutality
       });
       setQuest(data as Quest);
+      // If the engine returns a different location (unlikely but possible), sync it
+      if (data && (data as Quest).location) {
+        setLocation((data as Quest).location);
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -43,7 +48,6 @@ export default function QuestGen() {
     }
   };
 
-  const locations = ['Rattay', 'Talmberg', 'Sasau', 'Uzhit', 'Skalitz', 'Ledetchko', 'Merhojed', 'Pribyslavitz'];
   const difficulties = ['Easy', 'Medium', 'Hard', 'Hardcore'];
 
   return (
@@ -60,25 +64,14 @@ export default function QuestGen() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Controls */}
-        <div className="col-span-12 lg:col-span-4 bg-kcd-surface border border-kcd-border p-8 font-sans space-y-8 self-start">
+        <div className="col-span-12 lg:col-span-5 xl:col-span-4 bg-kcd-surface border border-kcd-border p-8 font-sans space-y-8 self-start">
           <div className="space-y-4">
             <label className="text-[10px] font-bold text-kcd-muted uppercase tracking-[0.2em] block">Target Geography</label>
-            <div className="grid grid-cols-2 gap-2">
-              {locations.map(loc => (
-                <button
-                  key={loc}
-                  onClick={() => setLocation(loc)}
-                  className={cn(
-                    "px-3 py-3 text-[10px] font-bold uppercase tracking-widest border transition-all",
-                    location === loc 
-                      ? "bg-kcd-accent text-kcd-bg border-kcd-accent shadow-[4px_4px_0px_rgba(193,154,77,0.2)]" 
-                      : "bg-kcd-bg border-kcd-border text-kcd-muted hover:border-kcd-accent/50"
-                  )}
-                >
-                  {loc}
-                </button>
-              ))}
-            </div>
+            <BohemiaMap 
+              selectedLocation={location} 
+              onLocationSelect={setLocation} 
+              className="mb-4 border-kcd-border/50"
+            />
           </div>
 
           <div className="space-y-4">
@@ -141,7 +134,7 @@ export default function QuestGen() {
         </div>
 
         {/* Output */}
-        <div className="col-span-12 lg:col-span-8 flex flex-col gap-6">
+        <div className="col-span-12 lg:col-span-7 xl:col-span-8 flex flex-col gap-6">
           <AnimatePresence mode="wait">
             {quest ? (
               <motion.div
