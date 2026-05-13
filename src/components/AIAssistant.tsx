@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Send, User, Bot, Sparkles, Wand2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import ReactMarkdown from 'react-markdown';
+import SafeMarkdown from './SafeMarkdown';
 import { generateNPCResponse } from '../lib/gemini';
 import { Message } from '../types';
 import { cn } from '../lib/utils';
@@ -113,9 +113,7 @@ export default function AIAssistant() {
                   ? "bg-kcd-surface border-kcd-border italic text-kcd-text" 
                   : "bg-kcd-bg border-kcd-accent/30 text-white shadow-[0_0_20px_rgba(193,154,77,0.05)]"
               )}>
-                <div className="markdown-content">
-                   <ReactMarkdown>{msg.content}</ReactMarkdown>
-                </div>
+                <SafeMarkdown content={msg.content} />
                 <p className="text-[9px] mt-4 opacity-20 font-sans tracking-widest uppercase">{msg.timestamp}</p>
               </div>
             </motion.div>

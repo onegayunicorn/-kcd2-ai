@@ -3,7 +3,7 @@ import { User, MessageSquare, Shield, Heart, Zap, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Personality } from '../types';
 import { generateNPCResponse } from '../lib/gemini';
-import ReactMarkdown from 'react-markdown';
+import SafeMarkdown from './SafeMarkdown';
 import { cn } from '../lib/utils';
 
 const NPCs: Personality[] = [
@@ -261,7 +261,7 @@ export default function NPCSimulator() {
                           </div>
                         ) : response ? (
                            <div className="text-3xl leading-snug font-serif text-white drop-shadow-[0_2px_10px_rgba(193,154,77,0.1)]">
-                             <ReactMarkdown>{response}</ReactMarkdown>
+                             <SafeMarkdown content={response} />
                            </div>
                         ) : (
                           <p className="text-xl italic text-kcd-muted opacity-40">Select synthesis to commence dialogue...</p>
