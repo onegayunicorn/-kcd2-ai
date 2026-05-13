@@ -154,7 +154,7 @@ export default function AlchemyLab() {
                                 <div className="absolute top-full left-1/2 w-px h-6 bg-kcd-border" />
                               )}
                            </div>
-                           <p className="text-white/80 text-lg leading-snug font-serif italic italic">"{step}"</p>
+                           <p className="text-white/80 text-lg leading-snug font-serif italic">"{step}"</p>
                         </div>
                       ))}
                    </div>

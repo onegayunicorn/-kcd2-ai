@@ -220,9 +220,9 @@ export default function NPCSimulator() {
 
                       <div className="space-y-3">
                         <span className="text-[10px] uppercase tracking-[0.2em] text-kcd-accent block font-bold border-b border-kcd-border pb-2">Neural Behavioral Profile</span>
-                        <p className="text-sm italic text-white/70 leading-relaxed font-serif">
+                        <div className="text-sm italic text-white/70 leading-relaxed font-serif">
                           "{selectedNPC.description}"
-                        </p>
+                        </div>
                       </div>
                    </div>
                 </div>
