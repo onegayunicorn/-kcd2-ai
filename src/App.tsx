@@ -12,14 +12,17 @@ import NPCSimulator from './components/NPCSimulator';
 import AlchemyLab from './components/AlchemyLab';
 import QuestGen from './components/QuestGen';
 import CombatAnalysis from './components/CombatAnalysis';
+import SUADashboard from './components/SUADashboard';
 
 export default function App() {
-  const [activeModule, setActiveModule] = useState('dashboard');
+  const [activeModule, setActiveModule] = useState('sua-dashboard');
 
   const renderModule = () => {
     switch (activeModule) {
       case 'dashboard':
         return <Dashboard />;
+      case 'sua-dashboard':
+        return <SUADashboard />;
       case 'mod-manager':
         return <ModManager />;
       case 'assistant':

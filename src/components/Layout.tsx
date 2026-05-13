@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Shield, Book, Scroll, Beaker, Settings, Sword, LayoutDashboard, MessageSquare, Swords } from 'lucide-react';
+import { Shield, Book, Scroll, Beaker, Settings, Sword, LayoutDashboard, MessageSquare, Swords, ShieldCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 
@@ -13,6 +13,7 @@ const modules = [
   { id: 'dashboard', name: 'Commander Dashboard', icon: LayoutDashboard },
   { id: 'mod-manager', name: 'AI Mod Manager', icon: Settings },
   { id: 'assistant', name: 'Henry\'s Companion', icon: MessageSquare },
+  { id: 'sua-dashboard', name: 'SUA Dashboard', icon: ShieldCheck },
   { id: 'npc-sim', name: 'NPC Simulator', icon: Sword },
   { id: 'alchemy', name: 'Alchemy Lab', icon: Beaker },
   { id: 'quests', name: 'Quest Generator', icon: Scroll },
