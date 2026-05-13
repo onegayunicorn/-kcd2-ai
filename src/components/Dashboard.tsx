@@ -1,14 +1,15 @@
 import React from 'react';
-import { Activity, Users, Settings, Database, Server, Zap } from 'lucide-react';
+import { Activity, Users, Database, Zap, Shield, Swords } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '../lib/utils';
+import { sua } from '../lib/sua-core';
 
 export default function Dashboard() {
   const stats = [
-    { label: 'Active Memory Hooks', value: '142', icon: Activity, color: 'text-blue-400' },
-    { label: 'Neural TTS Cache', value: '1.2 GB', icon: Database, color: 'text-kcd-accent' },
-    { label: 'AI Prompt Latency', value: '42ms', icon: Zap, color: 'text-green-500' },
-    { label: 'Connected NPCs', value: '850', icon: Users, color: 'text-purple-400' },
+    { label: 'SOVEREIGN HONOR', value: sua.getReputation().honor.toFixed(0), icon: Shield, color: 'text-blue-400' },
+    { label: 'SOVEREIGN BRUTALITY', value: sua.getReputation().brutality.toFixed(0), icon: Swords, color: 'text-red-500' },
+    { label: 'ADAPTIVE INTENSITY', value: `×${sua.getDifficulty().globalMultiplier.toFixed(2)}`, icon: Zap, color: 'text-kcd-accent' },
+    { label: 'CONNECTED NEURAL NODES', value: '850', icon: Users, color: 'text-purple-400' },
   ];
 
   return (
@@ -17,7 +18,7 @@ export default function Dashboard() {
         <div className="flex flex-col">
           <div className="flex items-center gap-2 mb-1">
             <div className="h-1 w-8 bg-kcd-accent"></div>
-            <span className="text-[10px] tracking-[0.4em] text-kcd-accent uppercase font-sans font-bold">Commander Insight System</span>
+            <span className="text-[10px] tracking-[0.4em] text-kcd-accent uppercase font-sans font-bold">Commander Insight System — SUA v4.2</span>
           </div>
           <h2 className="text-4xl font-bold uppercase tracking-tight text-white">Neural <span className="text-kcd-accent">Network</span> Dashboard</h2>
         </div>

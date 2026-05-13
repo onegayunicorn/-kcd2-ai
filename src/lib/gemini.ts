@@ -146,6 +146,36 @@ export async function generateQuantumQuest(
   return JSON.parse(response.text || "{}");
 }
 
+export async function generateSovereignAnalysis(
+  rep: { [key: string]: number }, 
+  diff: { [key: string]: number }
+) {
+  const model = "gemini-3-flash-preview";
+  
+  const prompt = `You are the Sovereign AI Command for Kingdom Come: Deliverance 2.
+  Perform a high-level strategic analysis of the player's current impact on Bohemia.
+  
+  CURRENT DATA VECTORS:
+  - Reputation: ${JSON.stringify(rep)}
+  - Adaptive Difficulty Matrix: ${JSON.stringify(diff)}
+  
+  Provide a concise, authoritative assessment of the player's 'Legacy'. 
+  If Honor is high, call them a 'Sovereign Paragon'. If Brutality is high, call them a 'Scourge of the Realm'.
+  Mention how the world's difficulty/resistance is adapting to their prowess.
+  
+  Final response MUST be a short paragraph under 60 words.`;
+
+  const response = await ai.models.generateContent({
+    model,
+    contents: prompt,
+    config: {
+      temperature: 0.7,
+    },
+  });
+
+  return response.text || "Analysis pending... System recalibrating.";
+}
+
 export async function getAlchemyAssistant(potionName: string) {
   const model = "gemini-3-flash-preview";
   

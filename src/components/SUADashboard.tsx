@@ -17,6 +17,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { sua } from '../lib/sua-core';
 import { cn } from '../lib/utils';
+import { generateSovereignAnalysis } from '../lib/gemini';
 
 export default function SUADashboard() {
   const [stats, setStats] = useState({
@@ -25,6 +26,8 @@ export default function SUADashboard() {
   });
   const [isSyncing, setIsSyncing] = useState(false);
   const [activeTab, setActiveTab] = useState<'telemetry' | 'audit' | 'security'>('telemetry');
+  const [sovereignAnalysis, setSovereignAnalysis] = useState<string>('Initializing strategic assessment...');
+  const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -32,9 +35,24 @@ export default function SUADashboard() {
         rep: sua.getReputation(),
         diff: sua.getDifficulty()
       });
-    }, 1500);
+    }, 15000); // Reduce frequency for layout stability
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    const fetchAnalysis = async () => {
+      setIsLoadingAnalysis(true);
+      try {
+        const analysis = await generateSovereignAnalysis(stats.rep, stats.diff);
+        setSovereignAnalysis(analysis);
+      } catch (err) {
+        setSovereignAnalysis("Error retrieving strategic analysis. Terminal offline.");
+      } finally {
+        setIsLoadingAnalysis(false);
+      }
+    };
+    fetchAnalysis();
+  }, [isSyncing]); // Re-fetch on sync or significant state change
 
   const handleManualSync = () => {
     setIsSyncing(true);
@@ -109,9 +127,21 @@ export default function SUADashboard() {
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                className="grid grid-cols-1 md:grid-cols-2 gap-8"
+                className="space-y-8"
               >
-                {/* Adaptive AI Matrix */}
+                {/* Strategic Assessment Alert */}
+                <div className="bg-kcd-bg border-l-4 border-kcd-accent p-6 relative overflow-hidden">
+                  <div className="absolute top-0 right-0 p-2">
+                    <Activity className={cn("w-4 h-4 text-kcd-accent/30", isLoadingAnalysis && "animate-spin")} />
+                  </div>
+                  <span className="text-[10px] uppercase font-bold tracking-[0.3em] text-kcd-accent block mb-3">Sovereign Strategic Assessment</span>
+                  <p className="text-xl font-serif italic text-white/90 leading-relaxed max-w-2xl">
+                    {sovereignAnalysis}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Adaptive AI Matrix */}
                 <div className="bg-kcd-surface border border-kcd-border p-8 space-y-8">
                   <div className="flex items-center justify-between border-b border-kcd-border pb-4">
                     <div className="flex items-center gap-3">
@@ -162,8 +192,9 @@ export default function SUADashboard() {
                     ))}
                   </div>
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
+          )}
 
             {activeTab === 'audit' && (
               <motion.div 
@@ -177,11 +208,28 @@ export default function SUADashboard() {
                   <h3 className="text-xs font-bold uppercase tracking-widest text-white">Immutable System Audit</h3>
                 </div>
                 <div className="space-y-2 max-h-[400px] overflow-y-auto pr-4 scrollbar-hide">
-                  {Array.from({ length: 10 }).map((_, i) => (
+                  {[
+                    `REPUTATION_STABILIZED: [HONOR:${stats.rep.honor.toFixed(0)}] [BRUTALITY:${stats.rep.brutality.toFixed(0)}]`,
+                    `AI_ADAPTATION_MATRIX_UPDATED: GLOBAL_MULT=${stats.diff.globalMultiplier.toFixed(2)}`,
+                    `NEURAL_EMOTION_SYNC: Target=Henry_of_Skalitz STATUS:PERSISTENT`,
+                    `QUANTUM_QUEST_POOL_REFRESH: Entropies aligned for Rattay`,
+                    `COMBAT_VECTOR_ANALYSIS: Countering feint-heavy player patterns`,
+                    `SOVEREIGN_SIGNATURE_VERIFIED: Commander Tyrone verified`,
+                    `WORLD_DECAY_CYCLE: Temporal shift applied`
+                  ].map((log, i) => (
                     <div key={i} className="flex items-center justify-between p-4 bg-kcd-bg/40 border border-kcd-border/50 font-mono text-[9px] text-kcd-muted">
                       <div className="flex items-center gap-4">
                         <span className="text-kcd-accent">[{new Date(Date.now() - i * 3600000).toISOString()}]</span>
-                        <span>EVENT_LOG: Synchronization success for module_id: {Math.random().toString(36).substring(7)}</span>
+                        <span className="text-white uppercase">{log}</span>
+                      </div>
+                      <span className="text-green-900/40">Verified_Signature_SHA384</span>
+                    </div>
+                  ))}
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <div key={i+7} className="flex items-center justify-between p-4 bg-kcd-bg/40 border border-kcd-border/50 font-mono text-[9px] text-kcd-muted">
+                      <div className="flex items-center gap-4">
+                        <span className="text-kcd-accent">[{new Date(Date.now() - (i+7) * 3600000).toISOString()}]</span>
+                        <span>SYSTEM_IDLE: Awaiting sovereign directive...</span>
                       </div>
                       <span className="text-green-900/40">Verified_Signature_SHA384</span>
                     </div>
