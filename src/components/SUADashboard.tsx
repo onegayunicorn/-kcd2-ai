@@ -12,7 +12,8 @@ import {
   RefreshCw,
   Search,
   CheckCircle2,
-  ShieldAlert
+  ShieldAlert,
+  Shield
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sua } from '../lib/sua-core';
@@ -25,7 +26,7 @@ export default function SUADashboard() {
     diff: sua.getDifficulty()
   });
   const [isSyncing, setIsSyncing] = useState(false);
-  const [activeTab, setActiveTab] = useState<'telemetry' | 'audit' | 'security'>('telemetry');
+  const [activeTab, setActiveTab] = useState<'telemetry' | 'audit' | 'security' | 'archive'>('telemetry');
   const [sovereignAnalysis, setSovereignAnalysis] = useState<string>('Initializing strategic assessment...');
   const [isLoadingAnalysis, setIsLoadingAnalysis] = useState(false);
 
@@ -103,7 +104,7 @@ export default function SUADashboard() {
 
       {/* Tabs */}
       <div className="flex gap-4 border-b border-kcd-border font-sans">
-        {(['telemetry', 'audit', 'security'] as const).map(tab => (
+        {(['telemetry', 'audit', 'security', 'archive'] as const).map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
@@ -281,6 +282,87 @@ export default function SUADashboard() {
                        </div>
                     </div>
                  </div>
+              </motion.div>
+            )}
+            {activeTab === 'archive' && (
+              <motion.div 
+                key="archive"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className="space-y-8"
+              >
+                <div className="bg-kcd-surface border border-kcd-border p-8">
+                  <div className="flex items-center justify-between mb-8 pb-4 border-b border-kcd-border">
+                    <div className="flex items-center gap-3">
+                      <Database className="w-5 h-5 text-kcd-accent" />
+                      <h3 className="text-xs font-bold uppercase tracking-widest text-white">Sovereign Master Record</h3>
+                    </div>
+                    <div className="text-[10px] font-mono text-kcd-accent">ARCHIVE_HASH: 0x7F3C...F6A3C9</div>
+                  </div>
+
+                  <div className="grid grid-cols-1 gap-6">
+                    <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                      <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Immutable System Inventory</span>
+                      <div className="space-y-2">
+                        {[
+                          { id: 'SUA-CORE-01', name: 'Reputation Decay', status: 'LOCKED', hash: '0xa1b2c3...' },
+                          { id: 'SUA-CORE-06', name: 'Quantum Quest', status: 'LOCKED', hash: '0xf67890...' },
+                          { id: 'SUA-UI-01', name: 'Bohemia Map', status: 'LOCKED', hash: '0x078901...' },
+                          { id: 'SUA-TELE-01', name: 'NeuralFlow', status: 'LOCKED', hash: '0x3a0123...' }
+                        ].map((mod) => (
+                          <div key={mod.id} className="flex items-center justify-between py-2 border-b border-kcd-border/20 font-mono text-[10px]">
+                            <div className="flex items-center gap-4">
+                              <span className="text-kcd-accent">{mod.id}</span>
+                              <span className="text-white uppercase">{mod.name}</span>
+                            </div>
+                            <div className="flex items-center gap-4">
+                              <span className="text-green-500">[{mod.status}]</span>
+                              <span className="text-kcd-muted">{mod.hash}</span>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                      <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Security Compliance</span>
+                        <div className="space-y-3">
+                          <div className="flex justify-between items-center text-[10px] font-mono">
+                            <span className="text-white">HMAC-SHA384 Integrity</span>
+                            <span className="text-green-500">VERIFIED</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px] font-mono">
+                            <span className="text-white">AES-256-GCM Encryption</span>
+                            <span className="text-green-500">VERIFIED</span>
+                          </div>
+                          <div className="flex justify-between items-center text-[10px] font-mono">
+                            <span className="text-white">mTLS Network Handshake</span>
+                            <span className="text-green-500">VERIFIED</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Project Closure</span>
+                        <div className="space-y-3 font-mono text-[10px]">
+                          <div className="flex items-center gap-2 text-green-500">
+                            <Shield className="w-3 h-3" />
+                            <span>SOURCE_FREEZE_COMPLETE</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-green-500">
+                            <Shield className="w-3 h-3" />
+                            <span>KEY_ROTATION_SUCCESS</span>
+                          </div>
+                          <div className="flex items-center gap-2 text-kcd-accent animate-pulse">
+                            <Shield className="w-3 h-3" />
+                            <span>MISSION_ARCHIVE_SEALED</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </motion.div>
             )}
           </AnimatePresence>
