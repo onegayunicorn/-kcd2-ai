@@ -13,7 +13,11 @@ import {
   Search,
   CheckCircle2,
   ShieldAlert,
-  Shield
+  Shield,
+  FileText,
+  ExternalLink,
+  Award,
+  Layers
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { sua } from '../lib/sua-core';
@@ -302,8 +306,124 @@ export default function SUADashboard() {
                   </div>
 
                   <div className="grid grid-cols-1 gap-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <FileText className="w-4 h-4 text-kcd-accent" />
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-white">Project Documentation</span>
+                            </div>
+                            <div className="space-y-3">
+                                {[
+                                    { name: 'Final Deployment Report', file: 'FINAL_REPORT.md' },
+                                    { name: 'B2B Sourcing Guide', file: 'B2B_SOURCING.md' },
+                                    { name: 'Security Protocol Audit', file: 'SECURITY_AUDIT.md' },
+                                    { name: 'Phase 1 Scaling Directive', file: 'SCALING_PHASE_1.md' }
+                                ].map((doc) => (
+                                    <div key={doc.file} className="flex items-center justify-between p-3 bg-kcd-surface border border-kcd-border/30 hover:border-kcd-accent/50 transition-all group cursor-pointer" onClick={() => window.open(`https://github.com/archive/${doc.file}`, '_blank')}>
+                                        <div className="flex flex-col">
+                                            <span className="text-[10px] font-bold text-white uppercase">{doc.name}</span>
+                                            <span className="text-[8px] text-kcd-muted font-mono">{doc.file}</span>
+                                        </div>
+                                        <button className="text-kcd-accent opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <ExternalLink className="w-3 h-3" />
+                                        </button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                            <div className="flex items-center gap-2 mb-2">
+                                <Award className="w-4 h-4 text-kcd-accent" />
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-white">Strategic B2B Partners</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-3">
+                                {[
+                                    { name: 'DDN', role: 'Storage' },
+                                    { name: 'VAST DATA', role: 'Data Lake' },
+                                    { name: 'WIND RIVER', role: 'Sovereign Cloud' },
+                                    { name: 'BITHOST', role: 'Infrastructure' },
+                                    { name: 'HYDRAHOST', role: 'Isolation' },
+                                    { name: 'INTENTAMPLIFY', role: 'Security' }
+                                ].map((partner) => (
+                                    <div key={partner.name} className="p-3 bg-kcd-surface border border-kcd-border/30 text-center space-y-1">
+                                        <span className="text-[10px] font-bold text-white block">{partner.name}</span>
+                                        <span className="text-[8px] text-kcd-muted font-mono uppercase tracking-tighter">{partner.role}</span>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <div className="lg:col-span-2 bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                            <div className="flex items-center gap-2 mb-4">
+                                <Search className="w-4 h-4 text-kcd-accent" />
+                                <span className="text-[10px] uppercase font-bold tracking-widest text-white">Operational Directive: Phase 1 Scaling</span>
+                            </div>
+                            
+                            <div className="flex flex-col md:flex-row gap-6">
+                                <div className="flex-1 space-y-4">
+                                    <div className="bg-kcd-surface/50 border border-kcd-border/30 p-4 font-mono text-[9px] text-kcd-muted leading-relaxed">
+                                        <div className="text-kcd-accent mb-2">[SOVEREIGN RACK LAYOUT — 42U]</div>
+                                        <div>U40-42: SECURITY TIER (HSM, mTLS)</div>
+                                        <div>U30-39: COMPUTE TIER (NVIDIA B200)</div>
+                                        <div>U20-29: TELEMETRY TIER (NEURALFLOW)</div>
+                                        <div>U10-19: STORAGE TIER (VAST/DDN)</div>
+                                        <div>U01-09: POWER/ENVIRONMENTAL</div>
+                                    </div>
+                                    <button className="w-full py-4 bg-kcd-accent hover:bg-gold-600 text-black text-[10px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center gap-2">
+                                        <CheckCircle2 className="w-4 h-4" />
+                                        Authorize Phase 1 Procurement
+                                    </button>
+                                </div>
+                                <div className="flex-1 space-y-3">
+                                    {[
+                                        'RFQ issued to sovereign vendors',
+                                        'Jurisdictional routing configured',
+                                        'HSM cluster procurement initiated',
+                                        'Rack layout CAD files delivery',
+                                        'Compliance audit schedule set'
+                                    ].map((item, i) => (
+                                        <div key={i} className="flex items-center gap-3 p-2 border-b border-kcd-border/20">
+                                            <div className="w-4 h-4 rounded-full border border-kcd-accent/30 flex items-center justify-center">
+                                                <div className="w-2 h-2 bg-kcd-accent animate-pulse rounded-full" />
+                                            </div>
+                                            <span className="text-[10px] text-kcd-muted uppercase tracking-wide">{item}</span>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
+                            <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Global Residency</span>
+                            <div className="space-y-4">
+                                {[
+                                    { region: 'European Union', framework: 'GDPR / AI Act', status: 'Wind River Hub' },
+                                    { region: 'North America', framework: 'CMMC 2.0 / FIPS', status: 'On-Prem HSM' },
+                                    { region: 'Asia-Pacific', framework: 'APPI / PDPA', status: 'Regional Gateway' }
+                                ].map((reg) => (
+                                    <div key={reg.region} className="space-y-1">
+                                        <div className="flex justify-between text-[10px] font-bold text-white">
+                                            <span>{reg.region}</span>
+                                            <span className="text-kcd-accent">{reg.status}</span>
+                                        </div>
+                                        <div className="text-[9px] text-kcd-muted font-mono">{reg.framework}</div>
+                                        <div className="w-full h-1 bg-kcd-border/20 rounded-full overflow-hidden">
+                                            <div className="w-3/4 h-full bg-green-500/50" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+
                     <div className="bg-kcd-bg/40 border border-kcd-border/50 p-6 space-y-4">
-                      <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Immutable System Inventory</span>
+                      <div className="flex items-center gap-2 mb-2">
+                        <Layers className="w-4 h-4 text-kcd-accent" />
+                        <span className="text-[10px] uppercase font-bold tracking-widest text-kcd-muted">Immutable System Inventory</span>
+                      </div>
                       <div className="space-y-2">
                         {[
                           { id: 'SUA-CORE-01', name: 'Reputation Decay', status: 'LOCKED', hash: '0xa1b2c3...' },
