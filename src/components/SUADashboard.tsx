@@ -317,7 +317,10 @@ export default function SUADashboard() {
                                     { name: 'Final Deployment Report', file: 'FINAL_REPORT.md' },
                                     { name: 'B2B Sourcing Guide', file: 'B2B_SOURCING.md' },
                                     { name: 'Security Protocol Audit', file: 'SECURITY_AUDIT.md' },
-                                    { name: 'Phase 1 Scaling Directive', file: 'SCALING_PHASE_1.md' }
+                                    { name: 'Phase 1 Scaling Directive', file: 'SCALING_PHASE_1.md' },
+                                    { name: 'HPE vs Supermicro B200', file: 'HPE_vs_SUPERMICRO_B200.md' },
+                                    { name: 'HSM RFQ Draft', file: 'THALES_LUNA_HSM_RFQ_DRAFT.md' },
+                                    { name: 'IMDA AI Verify Analysis', file: 'SINGAPORE_IMDA_AI_VERIFY_ANALYSIS.md' }
                                 ].map((doc) => (
                                     <div key={doc.file} className="flex items-center justify-between p-3 bg-kcd-surface border border-kcd-border/30 hover:border-kcd-accent/50 transition-all group cursor-pointer" onClick={() => window.open(`https://github.com/archive/${doc.file}`, '_blank')}>
                                         <div className="flex flex-col">
