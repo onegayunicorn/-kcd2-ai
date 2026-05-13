@@ -1,6 +1,7 @@
 import { ReputationDimension } from '../types';
 
 export interface ReputationState {
+  [key: string]: number;
   honor: number;
   brutality: number;
   charity: number;
@@ -10,6 +11,7 @@ export interface ReputationState {
 }
 
 export interface AdaptiveDifficulty {
+  [key: string]: number;
   aggression: number;
   tacticalAwareness: number;
   healthMultiplier: number;

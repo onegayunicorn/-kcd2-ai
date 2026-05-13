@@ -22,11 +22,12 @@ const locations: Location[] = [
 
 interface BohemiaMapProps {
   selectedLocation: string;
+  highlightedLocation?: string;
   onLocationSelect?: (name: string) => void;
   className?: string;
 }
 
-export default function BohemiaMap({ selectedLocation, onLocationSelect, className }: BohemiaMapProps) {
+export default function BohemiaMap({ selectedLocation, highlightedLocation, onLocationSelect, className }: BohemiaMapProps) {
   return (
     <div className={cn("relative w-full aspect-[4/3] bg-kcd-bg border border-kcd-border overflow-hidden group", className)}>
       {/* Map Background Grid/Texture */}
@@ -49,6 +50,7 @@ export default function BohemiaMap({ selectedLocation, onLocationSelect, classNa
       {/* Location Markers */}
       {locations.map((loc) => {
         const isSelected = selectedLocation === loc.name;
+        const isHighlighted = highlightedLocation === loc.name;
         return (
           <motion.button
             key={loc.name}
@@ -56,25 +58,32 @@ export default function BohemiaMap({ selectedLocation, onLocationSelect, classNa
             className="absolute -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group/pin"
             style={{ left: `${loc.x}%`, top: `${loc.y}%` }}
             initial={false}
-            animate={{ scale: isSelected ? 1.2 : 1 }}
+            animate={{ scale: isSelected || isHighlighted ? 1.2 : 1 }}
           >
             <div className="relative">
               <MapPin 
                 className={cn(
                   "w-6 h-6 transition-colors duration-300",
-                  isSelected ? "text-kcd-accent fill-kcd-accent/20" : "text-kcd-muted hover:text-kcd-accent/50"
+                  isSelected ? "text-kcd-accent fill-kcd-accent/20" : 
+                  isHighlighted ? "text-red-500 fill-red-500/20" :
+                  "text-kcd-muted hover:text-kcd-accent/50"
                 )} 
               />
-              {isSelected && (
+              {(isSelected || isHighlighted) && (
                 <motion.div 
                   layoutId="pulse"
-                  className="absolute inset-0 rounded-full border border-kcd-accent animate-ping" 
+                  className={cn(
+                    "absolute inset-0 rounded-full border animate-ping",
+                    isSelected ? "border-kcd-accent" : "border-red-500"
+                  )} 
                 />
               )}
             </div>
             <span className={cn(
               "mt-1 text-[8px] font-bold uppercase tracking-widest transition-all duration-300 whitespace-nowrap px-1 bg-kcd-bg/80 border border-transparent",
-              isSelected ? "text-white border-kcd-accent/30 py-0.5" : "text-kcd-muted opacity-0 group-hover/pin:opacity-100"
+              isSelected ? "text-white border-kcd-accent/30 py-0.5" : 
+              isHighlighted ? "text-red-500 border-red-500/30 py-0.5" :
+              "text-kcd-muted opacity-0 group-hover/pin:opacity-100"
             )}>
               {loc.name}
             </span>

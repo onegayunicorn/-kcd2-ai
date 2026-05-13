@@ -69,6 +69,7 @@ export default function QuestGen() {
             <label className="text-[10px] font-bold text-kcd-muted uppercase tracking-[0.2em] block">Target Geography</label>
             <BohemiaMap 
               selectedLocation={location} 
+              highlightedLocation={quest?.location}
               onLocationSelect={setLocation} 
               className="mb-4 border-kcd-border/50"
             />
