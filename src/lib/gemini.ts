@@ -98,6 +98,54 @@ export async function generateQuest(location: string, difficulty: string) {
   return JSON.parse(response.text || "{}");
 }
 
+export async function generateQuantumQuest(
+  location: string, 
+  baseDifficulty: string, 
+  suaParams: { 
+    globalDifficulty: number; 
+    playerHonor: number;
+    playerBrutality: number;
+  }
+) {
+  const model = "gemini-3-flash-preview";
+  
+  const prompt = `You are the Lead Quest Designer for Kingdom Come: Deliverance 2.
+  Synthesize a QUANTUM quest directive that adapts to the player's CURRENT SOVEREIGN STATE.
+  
+  WORLD PARAMETERS:
+  - Location: ${location}
+  - Base Challenge: ${baseDifficulty}
+  - Adaptive Dynamic Intensity: ${suaParams.globalDifficulty.toFixed(2)}x
+  - Player Honor (0-100): ${suaParams.playerHonor}
+  - Player Brutality (0-100): ${suaParams.playerBrutality}
+  
+  NARRATIVE GUIDELINE:
+  - If Honor is high: Offer noble, chivalric tasks.
+  - If Brutality is high: Offer "wetwork", extortion, or mercenary tasks.
+  - If Adaptive Intensity is high (>1.2): Make objectives significantly more complex and combat-heavy.
+  
+  Return the response as a JSON object:
+  {
+    "title": "Quest Title",
+    "description": "Narrative intro reflecting the player's reputation and the world intensity",
+    "reward": "Balanced reward for intensity level",
+    "location": "${location}",
+    "intensity_signature": "${suaParams.globalDifficulty.toFixed(2)}",
+    "objectives": ["Phase 1: Dynamic Objective", "Phase 2: Complex Interaction", "Phase 3: High Stakes Resolution"],
+    "quantum_logic_note": "A internal note about why this quest was chosen for the player's current honor/brutality mix"
+  }`;
+
+  const response = await ai.models.generateContent({
+    model,
+    contents: prompt,
+    config: {
+      responseMimeType: "application/json",
+    },
+  });
+
+  return JSON.parse(response.text || "{}");
+}
+
 export async function getAlchemyAssistant(potionName: string) {
   const model = "gemini-3-flash-preview";
   

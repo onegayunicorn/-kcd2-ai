@@ -3,6 +3,7 @@ import { Swords, ShieldAlert, Zap, Brain, ChevronRight, Activity, Target } from 
 import { motion, AnimatePresence } from 'framer-motion';
 import { analyzeCombatPatterns } from '../lib/gemini';
 import { cn } from '../lib/utils';
+import { sua } from '../lib/sua-core';
 
 interface CombatState {
   analysis: string;
@@ -45,6 +46,12 @@ export default function CombatAnalysis() {
     try {
       const data = await analyzeCombatPatterns(playerActions, enemyType);
       setResult(data);
+      
+      // Update SUA Adaptive Engine based on threat rating and action volume
+      // Higher threat rating + more actions = player is performing well, so increase difficulty
+      const performanceScore = (parseInt(data.threat_rating) / 50) * (playerActions.length / 5);
+      sua.updateDifficulty(Math.max(0.7, Math.min(1.5, performanceScore)));
+      
     } catch (error) {
       console.error(error);
     } finally {

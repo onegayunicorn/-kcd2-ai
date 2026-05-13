@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
-import { Scroll, MapPin, Trophy, Sword, Zap, RefreshCw, AlertCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Scroll, Zap, MapPin, Trophy, RefreshCw, AlertCircle, Sword, Shield } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { generateQuest } from '../lib/gemini';
+import { generateQuantumQuest } from '../lib/gemini';
 import { Quest } from '../types';
+import { sua } from '../lib/sua-core';
 import { cn } from '../lib/utils';
 
 export default function QuestGen() {
@@ -10,11 +11,30 @@ export default function QuestGen() {
   const [loading, setLoading] = useState(false);
   const [difficulty, setDifficulty] = useState('Medium');
   const [location, setLocation] = useState('Rattay');
+  const [suaState, setSuaState] = useState({
+    rep: sua.getReputation(),
+    diff: sua.getDifficulty()
+  });
+
+  // Pull latest engine stats periodically
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSuaState({
+        rep: sua.getReputation(),
+        diff: sua.getDifficulty()
+      });
+    }, 2000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleGenerate = async () => {
     setLoading(true);
     try {
-      const data = await generateQuest(location, difficulty);
+      const data = await generateQuantumQuest(location, difficulty, {
+        globalDifficulty: suaState.diff.globalMultiplier,
+        playerHonor: suaState.rep.honor,
+        playerBrutality: suaState.rep.brutality
+      });
       setQuest(data as Quest);
     } catch (error) {
       console.error(error);
@@ -87,11 +107,37 @@ export default function QuestGen() {
             className="group w-full py-5 bg-kcd-accent text-kcd-bg font-bold uppercase tracking-[0.2em] text-xs transition-all flex items-center justify-center gap-3 relative overflow-hidden"
           >
             {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : <Zap className="w-4 h-4" />}
-            Generate Contract
+            Synthesize Directive
             <motion.div 
                className="absolute inset-0 bg-white/10 -translate-x-full group-hover:translate-x-full transition-transform duration-700" 
             />
           </button>
+
+          <div className="pt-8 border-t border-kcd-border space-y-6">
+            <div className="flex items-center gap-3 mb-2">
+               <Shield className="w-3 h-3 text-kcd-accent" />
+               <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-kcd-muted">SUA Live Feed</span>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-4 font-mono text-[9px]">
+               <div className="space-y-1">
+                  <span className="block opacity-40">ADAPT_DIFF</span>
+                  <span className="text-kcd-accent">×{suaState.diff.globalMultiplier.toFixed(2)}</span>
+               </div>
+               <div className="space-y-1">
+                  <span className="block opacity-40">HONOR_IDX</span>
+                  <span className="text-kcd-accent">{suaState.rep.honor.toFixed(0)}</span>
+               </div>
+               <div className="space-y-1">
+                  <span className="block opacity-40">BRUTALITY_IDX</span>
+                  <span className="text-kcd-accent">{suaState.rep.brutality.toFixed(0)}</span>
+               </div>
+               <div className="space-y-1">
+                  <span className="block opacity-40">LAST_DECAY</span>
+                  <span className="text-kcd-accent">STABLE</span>
+               </div>
+            </div>
+          </div>
         </div>
 
         {/* Output */}
@@ -115,30 +161,31 @@ export default function QuestGen() {
                     <div className="space-y-2">
                       <div className="flex items-center gap-3">
                         <Scroll className="w-4 h-4 text-kcd-accent" />
-                        <span className="text-[10px] font-bold text-kcd-muted uppercase tracking-[0.3em] font-sans">Active Quest Directive</span>
+                        <span className="text-[10px] font-bold text-kcd-muted uppercase tracking-[0.3em] font-sans">Quantum Quest Directive</span>
                       </div>
                       <h3 className="text-4xl font-bold uppercase tracking-tight text-white">{quest.title}</h3>
                     </div>
                     <div className={cn(
-                       "px-4 py-2 border text-[10px] font-bold uppercase tracking-[0.2em] font-sans",
-                       quest.difficulty === 'Hardcore' ? "bg-red-900/10 text-red-500 border-red-500/50" :
-                       quest.difficulty === 'Hard' ? "bg-orange-900/10 text-orange-500 border-orange-500/50" :
+                       "px-4 py-2 border text-[10px] font-bold uppercase tracking-[0.2em] font-sans flex flex-col items-center",
+                       suaState.diff.globalMultiplier > 1.2 ? "bg-red-900/10 text-red-500 border-red-500/50" :
+                       suaState.diff.globalMultiplier > 0.9 ? "bg-orange-900/10 text-orange-500 border-orange-500/50" :
                        "bg-green-900/10 text-green-500 border-green-500/50"
                     )}>
-                       {quest.difficulty.toUpperCase()}
+                       <span>INTENSITY</span>
+                       <span className="text-lg leading-none">{quest.intensity_signature}</span>
                     </div>
                   </div>
 
                   <div className="grid grid-cols-2 gap-8 font-sans">
                     <div className="space-y-1">
-                      <span className="text-[10px] uppercase tracking-widest text-kcd-muted font-bold">Region Boundary</span>
+                      <span className="text-[10px] uppercase tracking-widest text-kcd-muted font-bold">Spatial Vector</span>
                       <div className="text-lg font-bold text-white flex items-center gap-2">
                          <div className="w-1.5 h-1.5 bg-kcd-accent rounded-full" />
                          {quest.location}
                       </div>
                     </div>
                     <div className="space-y-1">
-                      <span className="text-[10px] uppercase tracking-widest text-kcd-muted font-bold">Estimated Yield</span>
+                      <span className="text-[10px] uppercase tracking-widest text-kcd-muted font-bold">Algorithmic Reward</span>
                       <div className="text-lg font-bold text-kcd-accent flex items-center gap-2">
                          <div className="w-1.5 h-1.5 bg-kcd-accent rounded-full" />
                          {quest.reward}
@@ -147,11 +194,14 @@ export default function QuestGen() {
                   </div>
 
                   <div className="space-y-8 font-serif">
-                    <p className="text-2xl italic text-white/90 leading-snug drop-shadow-lg font-serif">"{quest.description}"</p>
+                    <div className="space-y-2">
+                       <span className="text-[10px] uppercase tracking-widest text-kcd-muted font-bold font-sans">Logic Stream Context</span>
+                       <p className="text-2xl italic text-white/90 leading-snug drop-shadow-lg font-serif">"{quest.description}"</p>
+                    </div>
                     
                     <div className="space-y-4">
                       <h4 className="text-[10px] font-bold text-kcd-accent uppercase tracking-[0.4em] flex items-center gap-3 font-sans">
-                        Tactical Execution Steps
+                        Sovereign Objectives
                       </h4>
                       <div className="grid gap-3 font-sans">
                         {quest.objectives.map((obj, i) => (
@@ -161,6 +211,11 @@ export default function QuestGen() {
                           </div>
                         ))}
                       </div>
+                    </div>
+
+                    <div className="p-4 bg-kcd-bg border border-kcd-border text-[10px] text-kcd-muted font-sans italic">
+                      <span className="text-kcd-accent font-bold not-italic font-sans mr-2 underline">QUANTUM_LOGIC:</span>
+                      {quest.quantum_logic_note}
                     </div>
                   </div>
                 </div>
