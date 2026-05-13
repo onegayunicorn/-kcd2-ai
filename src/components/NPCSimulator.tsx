@@ -260,9 +260,9 @@ export default function NPCSimulator() {
                              <motion.div animate={{ scaleY: [1, 1.5, 1] }} transition={{ repeat: Infinity, duration: 0.8, delay: 0.2 }} className="w-1 h-6 bg-kcd-accent/40" />
                           </div>
                         ) : response ? (
-                           <p className="text-3xl leading-snug font-serif text-white drop-shadow-[0_2px_10px_rgba(193,154,77,0.1)]">
+                           <div className="text-3xl leading-snug font-serif text-white drop-shadow-[0_2px_10px_rgba(193,154,77,0.1)]">
                              <ReactMarkdown>{response}</ReactMarkdown>
-                           </p>
+                           </div>
                         ) : (
                           <p className="text-xl italic text-kcd-muted opacity-40">Select synthesis to commence dialogue...</p>
                         )}
