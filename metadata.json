@@ -1,0 +1,6 @@
+{
+  "name": "KCD2 AI Integration System",
+  "description": "A high-fidelity AI integration and companion dashboard for Kingdom Come: Deliverance 2, featuring NPC dialogue simulators, procedural quest generation, and real-time alchemy assistance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

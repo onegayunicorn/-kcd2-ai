@@ -1,0 +1,37 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=JetBrains+Mono:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Playfair Display", serif;
+  --font-mono: "JetBrains Mono", monospace;
+
+  --color-kcd-bg: #0c0b0a;
+  --color-kcd-surface: #1c1915;
+  --color-kcd-accent: #c19a4d;
+  --color-kcd-border: #4d4133;
+  --color-kcd-text: #d4c5a9;
+  --color-kcd-muted: #6e5d4a;
+}
+
+@layer base {
+  body {
+    @apply bg-kcd-bg text-kcd-text font-serif selection:bg-kcd-accent/30;
+  }
+
+  .markdown-content p {
+    @apply mb-4 leading-relaxed tracking-wide;
+  }
+
+  .markdown-content strong {
+    @apply text-kcd-accent font-bold;
+  }
+
+  .markdown-content em {
+    @apply text-kcd-text/80 italic;
+  }
+
+  .markdown-content ul {
+    @apply list-disc list-inside mb-4 space-y-1;
+  }
+}
