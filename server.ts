@@ -5,6 +5,14 @@ import { createServer as createViteServer } from "vite";
 import * as geminiService from "./src/server/gemini-service";
 
 async function startServer() {
+  console.log("Starting server...");
+  console.log("Checking for API keys...");
+  if (process.env.GEMINI_API_KEY) {
+    console.log("GEMINI_API_KEY is present");
+  } else {
+    console.log("GEMINI_API_KEY is MISSING from process.env");
+  }
+
   const app = express();
   const PORT = 3000;
 
