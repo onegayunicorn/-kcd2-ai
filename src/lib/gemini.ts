@@ -13,7 +13,18 @@ export async function generateNPCResponse(
       payload: { npcName, npcRole, userMessage, history, context },
     }),
   });
-  if (!response.ok) throw new Error("Failed to generate response");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Gemini API Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -26,7 +37,18 @@ export async function analyzeCombatPatterns(playerHistory: string[], enemyType: 
       payload: { playerHistory, enemyType },
     }),
   });
-  if (!response.ok) throw new Error("Failed to analyze patterns");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Combat Analysis Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -39,7 +61,18 @@ export async function generateQuest(location: string, difficulty: string) {
       payload: { location, difficulty },
     }),
   });
-  if (!response.ok) throw new Error("Failed to generate quest");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Quest Generation Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -60,7 +93,18 @@ export async function generateQuantumQuest(
       payload: { location, baseDifficulty, suaParams },
     }),
   });
-  if (!response.ok) throw new Error("Failed to generate quantum quest");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Quantum Quest Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -76,7 +120,18 @@ export async function generateSovereignAnalysis(
       payload: { rep, diff },
     }),
   });
-  if (!response.ok) throw new Error("Failed to generate analysis");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Sovereign Analysis Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
 
@@ -89,6 +144,17 @@ export async function getAlchemyAssistant(potionName: string) {
       payload: { potionName },
     }),
   });
-  if (!response.ok) throw new Error("Failed to get alchemy assistant");
+  if (!response.ok) {
+    let errorMessage = `Server error ${response.status}`;
+    try {
+      const errorData = await response.json();
+      errorMessage = errorData.error || errorMessage;
+    } catch (e) {
+      const text = await response.text().catch(() => "");
+      if (text) errorMessage = text;
+    }
+    console.error("Alchemy Error Context:", errorMessage);
+    throw new Error(errorMessage);
+  }
   return response.json();
 }
