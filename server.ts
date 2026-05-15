@@ -1,4 +1,3 @@
-import "dotenv/config";
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
@@ -6,12 +5,12 @@ import * as geminiService from "./src/server/gemini-service";
 
 async function startServer() {
   console.log("Starting server...");
-  console.log("Checking for API keys...");
-  if (process.env.GEMINI_API_KEY) {
-    console.log("GEMINI_API_KEY is present");
-  } else {
-    console.log("GEMINI_API_KEY is MISSING from process.env");
-  }
+  console.log("Environment check:");
+  const keys = Object.keys(process.env).filter(k => k.includes("API") || k.includes("GOOGLE") || k.includes("GEMINI"));
+  keys.forEach(k => {
+    const val = process.env[k] || "";
+    console.log(`- ${k}: ${val ? (val.length > 8 ? val.substring(0, 4) + "..." : "[EXISTS]") : "MISSING"}`);
+  });
 
   const app = express();
   const PORT = 3000;

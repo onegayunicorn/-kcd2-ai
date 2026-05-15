@@ -5,8 +5,8 @@ let aiInstance: GoogleGenAI | null = null;
 function getAI() {
   if (!aiInstance) {
     const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY;
-    if (!apiKey || apiKey === "MY_GEMINI_API_KEY") {
-      throw new Error("GEMINI_API_KEY is missing or is set to a placeholder value. Please ensure it is set correctly in your Secrets panel.");
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is missing. Please ensure you have added it to the 'Secrets' panel in the Settings menu (use key name GEMINI_API_KEY).");
     }
     aiInstance = new GoogleGenAI({
       apiKey,
