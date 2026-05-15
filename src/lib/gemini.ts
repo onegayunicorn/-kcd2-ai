@@ -14,16 +14,16 @@ export async function generateNPCResponse(
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Gemini API Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }
@@ -38,16 +38,16 @@ export async function analyzeCombatPatterns(playerHistory: string[], enemyType: 
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Combat Analysis Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }
@@ -62,16 +62,16 @@ export async function generateQuest(location: string, difficulty: string) {
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Quest Generation Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }
@@ -94,16 +94,16 @@ export async function generateQuantumQuest(
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Quantum Quest Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }
@@ -121,16 +121,16 @@ export async function generateSovereignAnalysis(
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Sovereign Analysis Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }
@@ -145,16 +145,16 @@ export async function getAlchemyAssistant(potionName: string) {
     }),
   });
   if (!response.ok) {
-    let errorMessage = `Server error ${response.status}`;
+    const text = await response.text();
+    let errorMessage = text;
     try {
-      const errorData = await response.json();
+      const errorData = JSON.parse(text);
       errorMessage = errorData.error || errorMessage;
     } catch (e) {
-      const text = await response.text().catch(() => "");
-      if (text) errorMessage = text;
+      // Not JSON
     }
     console.error("Alchemy Error Context:", errorMessage);
-    throw new Error(errorMessage);
+    throw new Error(errorMessage || `Server error ${response.status}`);
   }
   return response.json();
 }

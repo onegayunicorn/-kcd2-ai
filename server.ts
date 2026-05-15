@@ -1,16 +1,26 @@
+import "dotenv/config";
 import express from "express";
 import path from "path";
 import { createServer as createViteServer } from "vite";
 import * as geminiService from "./src/server/gemini-service";
 
 async function startServer() {
-  console.log("Starting server...");
-  console.log("Environment check:");
-  const keys = Object.keys(process.env).filter(k => k.includes("API") || k.includes("GOOGLE") || k.includes("GEMINI"));
-  keys.forEach(k => {
-    const val = process.env[k] || "";
-    console.log(`- ${k}: ${val ? (val.length > 8 ? val.substring(0, 4) + "..." : "[EXISTS]") : "MISSING"}`);
-  });
+  console.log("--- Sovereign Unified Architecture Boot Sequence ---");
+  
+  // Debug environment
+  const apiKeys = Object.keys(process.env).filter(key => 
+    key.includes("API_KEY") || key.includes("GEMINI") || key.includes("GOOGLE")
+  );
+  
+  console.log("Detected API Keys in environment:");
+  if (apiKeys.length === 0) {
+    console.log("  [CRITICAL] No relevant API keys found in process.env");
+  } else {
+    apiKeys.forEach(k => {
+      const val = process.env[k] || "";
+      console.log(`  - ${k}: ${val ? (val.length > 8 ? val.substring(0, 4) + "..." : "[EXISTS]") : "EMPTY"}`);
+    });
+  }
 
   const app = express();
   const PORT = 3000;

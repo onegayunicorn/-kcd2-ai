@@ -4,9 +4,27 @@ let aiInstance: GoogleGenAI | null = null;
 
 function getAI() {
   if (!aiInstance) {
-    const apiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_GENAI_API_KEY || process.env.GOOGLE_API_KEY;
+    const apiKeys = [
+      process.env.GEMINI_API_KEY,
+      process.env.GOOGLE_GENAI_API_KEY,
+      process.env.GOOGLE_API_KEY,
+      process.env.API_KEY,
+      process.env.AISTUDIO_API_KEY
+    ];
+    
+    let apiKey = apiKeys.find(key => key && key.length > 5);
+    
     if (!apiKey) {
-      throw new Error("GEMINI_API_KEY is missing. Please ensure you have added it to the 'Secrets' panel in the Settings menu (use key name GEMINI_API_KEY).");
+      // Last ditch: check all env vars for something that looks like an API key
+      const possibleKey = Object.entries(process.env).find(([k, v]) => 
+        (k.includes("API") || k.includes("KEY") || k.includes("GOOGLE") || k.includes("GEMINI")) && 
+        v && v.length > 20
+      );
+      if (possibleKey) apiKey = possibleKey[1];
+    }
+
+    if (!apiKey) {
+      throw new Error("GEMINI_API_KEY is missing. To fix this, please Open 'Settings' -> 'Secrets' and add a new secret with the name 'GEMINI_API_KEY' and your Google AI Studio API key as the value.");
     }
     aiInstance = new GoogleGenAI({
       apiKey,
