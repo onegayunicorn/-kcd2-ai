@@ -8,12 +8,6 @@ This contains everything you need to run your app locally.
 
 View your app in AI Studio: https://ai.studio/apps/97d442ce-0781-4fae-abf2-aabd1600efb6
 
-## GitHub Pages
-
-This app is configured to deploy automatically to GitHub Pages from the `gh-pages` branch. After pushing this branch, the published site should be available at:
-
-https://onegayunicorn.github.io/-KCD2-AI/
-
 ## Run Locally
 
 **Prerequisites:**  Node.js

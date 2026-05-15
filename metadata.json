@@ -2,5 +2,7 @@
   "name": "KCD2: Sovereign Unified Architecture",
   "description": "The ultimate AI-driven matrix for Kingdom Come: Deliverance 2. Features procedural Quantum Quest generation, sovereign NPC memory, adaptive combat analysis, and a real-time command terminal.",
   "requestFramePermissions": [],
-  "majorCapabilities": []
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
 }
